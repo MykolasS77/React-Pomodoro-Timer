@@ -7,6 +7,7 @@ function FormTemplate(props){
     const [hours, setHours] = useState(0)
     const [startTimer, updateStart] = useState(false)
     const intervalRef = React.useRef(null);
+    const [startBreak, updateBreak] = useState(false)
     
     const time_2 = new Date()
     time_2.setHours(hours)
@@ -92,6 +93,12 @@ function FormTemplate(props){
     function refresh_pomadoro(){
         
         setSecconds((prevState)=> {
+            if(prevState === 1){
+                stop_timer()
+                updateBreak(false)
+                props.timerStage(startBreak)
+            }
+            console.log(props.startBreak, "cia start break")
             var newDate = prevState - 1
             console.log(prevState)
             return newDate
@@ -104,26 +111,38 @@ function FormTemplate(props){
         }
         function stop_timer(){
             updateStart(false)
-            }
+        }
+
     
         useEffect(() => {
+        
         if (startTimer == true) {
-    
+            
             const interval = setInterval(refresh_pomadoro, 1000);
         
             return () => clearInterval(interval);
         }
         }, [startTimer]);
-    
+
+        function reset_timer(){
+            setSecconds(0)
+            setMinutes(0)
+            setHours(0)
+        }
+
+
     return(
         <div>
-            <div>
+            <div className="timer">
                 <h1>{time_2.toLocaleTimeString("uk-Uk")}</h1>
                 <p>Adjust secconds <button name="+secconds" onClick={set_timer} onMouseDown={startCounter} onMouseUp={stopCounter}>+</button> <button name="-secconds" onClick={set_timer} onMouseDown={startCounter} onMouseUp={stopCounter}>-</button> </p>
                 <p>Adjust minutes <button name="+minutes" onClick={set_timer} onMouseDown={startCounter} onMouseUp={stopCounter}>+</button> <button name="-minutes" onClick={set_timer} onMouseDown={startCounter} onMouseUp={stopCounter}>-</button> </p>
                 <p>Adjust hours <button name="+hours" onClick={set_timer} onMouseDown={startCounter} onMouseUp={stopCounter}>+</button> <button name="-hours" onClick={set_timer} onMouseDown={startCounter} onMouseUp={stopCounter}>-</button> </p>
+                <div className="buttons">
                 <button onClick={start_timer} >Start Timer</button>
                 <button onClick={stop_timer}>Stop Timer</button>
+                <button onClick={reset_timer}>Reset Timer</button>
+                </div>
             </div>
         </div>
         

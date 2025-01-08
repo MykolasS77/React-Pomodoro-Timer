@@ -1,0 +1,24 @@
+body {
+    background: #d68888;
+    padding: 0 16px;
+  }
+
+.timer {
+    background-color: rgb(233, 233, 233);
+    margin: auto;
+    width: 30%;
+    border: 3px solid green;
+    padding: 10px;
+    text-align: center;
+    border: 3px solid green;
+}
+
+h1{
+    
+    margin: 0px
+}
+
+/* .buttons {
+    
+    height: 37.6px;
+} */
