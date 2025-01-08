@@ -7,7 +7,6 @@ function FormTemplate(props){
     const [hours, setHours] = useState(0)
     const [startTimer, updateStart] = useState(false)
     const intervalRef = React.useRef(null);
-    const [startBreak, updateBreak] = useState(false)
     
     const time_2 = new Date()
     time_2.setHours(hours)
@@ -54,32 +53,7 @@ function FormTemplate(props){
     const startCounter = (event) => {
     if (intervalRef.current) return;
     intervalRef.current = setInterval(() => {
-        console.log(event.target.name)
-        let action_name = event.target.name
-        switch(action_name){
-            case "+secconds":
-                setSecconds((prev_number) => prev_number + 1)
-                break
-            case "-secconds":
-                setSecconds((prev_number) => prev_number - 1)
-                break
-            case "+minutes":
-                var new_number = minutes + 1
-                setMinutes((prev_number) => prev_number + 1)
-                break
-            case "-minutes":
-                var new_number = minutes - 1
-                setMinutes((prev_number) => prev_number - 1)
-                break
-            case "+hours":
-                var new_number = hours + 1
-                setHours((prev_number) => prev_number + 1)
-                break
-            case "-hours":
-                var new_number = hours - 1
-                setHours((prev_number) => prev_number - 1)
-                break
-        }
+
     }, 150);
     };
 
@@ -95,28 +69,34 @@ function FormTemplate(props){
         setSecconds((prevState)=> {
             if(prevState === 1){
                 stop_timer()
-                updateBreak(false)
-                props.timerStage(startBreak)
+               
             }
-            console.log(props.startBreak, "cia start break")
             var newDate = prevState - 1
-            console.log(prevState)
+            console.log(props.id, "refresh pomadoro")
+            console.log(props.start_break)
             return newDate
         })
     
         }
     
         function start_timer(){
-        updateStart(true)
+           
+            if(hours === 0 && minutes === 0 && secconds === 0){
+                return
+            }
+            else{updateStart(true)}
+              
         }
+
         function stop_timer(){
             updateStart(false)
+            props.timer_stops(true)
         }
 
     
         useEffect(() => {
         
-        if (startTimer == true) {
+        if (startTimer == true){
             
             const interval = setInterval(refresh_pomadoro, 1000);
         

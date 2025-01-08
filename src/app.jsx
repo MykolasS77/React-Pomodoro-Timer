@@ -9,13 +9,13 @@ function App() {
 
       function start_pause_break(timer_stage){
         console.log(timer_stage, "Cia app function")
-        updateBreak(true)
+        updateBreak(timer_stage)
       }
 
       return (
         <div>
-        <Timer timerStage={start_pause_break}/>
-        <Break timerStage={start_pause_break} startBreak={startBreak}/>
+        <Timer timer_stops={start_pause_break}/>
+        <Break startBreak={startBreak} timer_starts={start_pause_break}/>
         </div> 
       );
  
