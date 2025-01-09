@@ -50,9 +50,31 @@ function Break(props){
         return () => stopCounter(); 
       }, []);
 
-    const startCounter = () => {
+    const startCounter = (event) => {
     if (intervalRef.current) return;
     intervalRef.current = setInterval(() => {
+        let action_name = event.target.name
+        console.log(action_name)
+        switch(action_name){
+            case "+secconds":
+                setSecconds((prev_number) => prev_number + 1)
+                break
+            case "-secconds":
+                setSecconds((prev_number) => prev_number - 1)
+                break
+            case "+minutes":            
+                setMinutes((prev_number) => prev_number + 1)
+                break
+            case "-minutes":            
+                setMinutes((prev_number) => prev_number - 1)
+                break
+            case "+hours":               
+                setHours((prev_number) => prev_number + 1)
+                break
+            case "-hours":
+                setHours((prev_number) => prev_number - 1)
+                break
+        }
 
     }, 150);
     };
@@ -120,6 +142,7 @@ function Break(props){
     return(
         <div>
             <div className="timer">
+                <h1>Break Timer</h1>
                 <h1>{time_2.toLocaleTimeString("uk-Uk")}</h1>
                 <p>Adjust secconds <button name="+secconds" onClick={set_timer} onMouseDown={startCounter} onMouseUp={stopCounter}>+</button> <button name="-secconds" onClick={set_timer} onMouseDown={startCounter} onMouseUp={stopCounter}>-</button> </p>
                 <p>Adjust minutes <button name="+minutes" onClick={set_timer} onMouseDown={startCounter} onMouseUp={stopCounter}>+</button> <button name="-minutes" onClick={set_timer} onMouseDown={startCounter} onMouseUp={stopCounter}>-</button> </p>
