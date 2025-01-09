@@ -1,17 +1,23 @@
 body {
-    background: #d68888;
+    background: #bb3b3b;
     padding: 0 16px;
   }
 
 .timer {
-    background-color: rgb(233, 233, 233);
+    background-color: rgb(255, 255, 255);
     margin: auto;
     width: 30%;
     border: 3px solid green;
     padding: 10px;
     text-align: center;
     border: 3px solid green;
+    border-radius: 7px;
+    margin-bottom: 7px
 }
+
+html {
+    font-family: "Montserrat", sans-serif;
+  }
 
 h1{
     margin-top: 0px
