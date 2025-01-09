@@ -15,6 +15,10 @@ body {
     margin-bottom: 7px
 }
 
+.timerBody{
+  margin-top: 20vh;
+}
+
 html {
     font-family: "Montserrat", sans-serif;
   }
@@ -23,7 +27,3 @@ h1{
     margin-top: 0px
 }
 
-/* .buttons {
-    
-    height: 37.6px;
-} */
