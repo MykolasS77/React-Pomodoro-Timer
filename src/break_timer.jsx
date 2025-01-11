@@ -1,9 +1,11 @@
 import React, { useState, useEffect } from 'react';
+import Stack from '@mui/material/Stack';
+import Button from '@mui/material/Button';
 
 function Break(props){
 
     const [secconds, setSecconds] = useState(0)
-    const [minutes, setMinutes] = useState(5)
+    const [minutes, setMinutes] = useState(0)
     const [hours, setHours] = useState(0)
     const intervalRef = React.useRef(null);
    
@@ -141,19 +143,19 @@ function Break(props){
     
     return(
         <div>
-            <div className="timer">
-                <h1>Break Timer</h1>
-                <h1>{time_2.toLocaleTimeString("uk-Uk")}</h1>
-                <p>Adjust secconds <button name="+secconds" onClick={set_timer} onMouseDown={startCounter} onMouseUp={stopCounter}>+</button> <button name="-secconds" onClick={set_timer} onMouseDown={startCounter} onMouseUp={stopCounter}>-</button> </p>
-                <p>Adjust minutes <button name="+minutes" onClick={set_timer} onMouseDown={startCounter} onMouseUp={stopCounter}>+</button> <button name="-minutes" onClick={set_timer} onMouseDown={startCounter} onMouseUp={stopCounter}>-</button> </p>
-                <p>Adjust hours <button name="+hours" onClick={set_timer} onMouseDown={startCounter} onMouseUp={stopCounter}>+</button> <button name="-hours" onClick={set_timer} onMouseDown={startCounter} onMouseUp={stopCounter}>-</button> </p>
-                <div className="buttons">
-                <button onClick={start_timer} >Start Timer</button>
-                <button onClick={stop_timer}>Stop Timer</button>
-                <button onClick={reset_timer}>Reset Timer</button>
-                </div>
+        <div className="timer">
+            <h1>Focus Timer</h1>
+            <h1>{time_2.toLocaleTimeString("uk-Uk")}</h1>
+            <h2>Adjust secconds <Button variant="contained" name="+secconds" onClick={set_timer} onMouseDown={startCounter} onMouseUp={stopCounter}>+</Button> <Button variant="contained" name="-secconds" onClick={set_timer} onMouseDown={startCounter} onMouseUp={stopCounter}>-</Button> </h2>
+            <h2>Adjust minutes <Button variant="contained" name="+minutes" onClick={set_timer} onMouseDown={startCounter} onMouseUp={stopCounter}>+</Button> <Button variant="contained" name="-minutes" onClick={set_timer} onMouseDown={startCounter} onMouseUp={stopCounter}>-</Button></h2>
+            <h2>Adjust hours <Button variant="contained" name="+hours" onClick={set_timer} onMouseDown={startCounter} onMouseUp={stopCounter}>+</Button> <Button variant="contained"name="-hours" onClick={set_timer} onMouseDown={startCounter} onMouseUp={stopCounter}>-</Button></h2>
+            <div className="buttons">
+            <Button variant="text" onClick={start_timer} >Start Timer</Button>
+            <Button onClick={stop_timer}>Stop Timer</Button>
+            <Button onClick={reset_timer}>Reset Timer</Button>
             </div>
         </div>
+    </div>
         
     )
 }

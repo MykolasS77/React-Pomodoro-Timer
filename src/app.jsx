@@ -1,6 +1,7 @@
 import React, {useState} from 'react';
 import Timer from "./timer"
 import Break from './break_timer';
+import HeaderFunc from './header';
 import "./styles.css"
 
 function App() {
@@ -16,9 +17,13 @@ function App() {
       }
 
       return (
-        <div className="timerBody">
-        <Timer timer_stops={start_pause_break}/>
-        <Break startBreak={startBreak} timer_starts={start_pause_break}/>
+        <div>
+
+          <HeaderFunc/>
+          <div className="timerBody">
+          <Timer timer_stops={start_pause_break}/>
+          <Break startBreak={startBreak} timer_starts={start_pause_break}/>
+          </div>
         </div> 
       );
  
