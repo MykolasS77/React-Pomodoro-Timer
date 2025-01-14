@@ -1,19 +1,18 @@
 import React, {useState} from 'react';
 import Timer from "./timer"
-import Break from './break_timer';
 import HeaderFunc from './header';
 import "./styles.css"
 
 function App() {
 
       const [startBreak, updateBreak] = useState(false)
-      var alarm = new Audio("alarm.mp3");
-    
+      const [timerRuns, updateTimerRuns] = useState(false)
+      
 
-      function start_pause_break(timer_stage){
-        console.log(timer_stage, "Cia app function")
-        updateBreak(timer_stage)
-        alarm.play();
+      function start_pause_break(timer_state, break_state){
+        console.log(timer_state, "Cia app function")
+        updateTimerRuns(timer_state)
+        updateBreak(break_state) 
       }
 
       return (
@@ -21,8 +20,8 @@ function App() {
 
           <HeaderFunc/>
           <div className="timerBody">
-          <Timer timer_stops={start_pause_break}/>
-          <Break startBreak={startBreak} timer_starts={start_pause_break}/>
+          <Timer id={1} title={"Focus Timer"} timer_state_change={start_pause_break} timer_state={timerRuns} break_state={startBreak}/>
+          <Timer id={2} title={"Break Timer"} timer_state_change={start_pause_break} timer_state={timerRuns} break_state={startBreak}/>
           </div>
         </div> 
       );

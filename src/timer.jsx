@@ -1,14 +1,16 @@
 import React, { useState, useEffect } from 'react';
 import Stack from '@mui/material/Stack';
 import Button from '@mui/material/Button';
+import Grid from '@mui/material/Grid';
+import Box from '@mui/material/Box';
 
 function FormTemplate(props){
 
     const [secconds, setSecconds] = useState(0)
     const [minutes, setMinutes] = useState(0)
     const [hours, setHours] = useState(0)
-    const [startTimer, updateStart] = useState(false)
     const intervalRef = React.useRef(null);
+    var alarm = new Audio("alarm.mp3");
     
     const time_2 = new Date()
     time_2.setHours(hours)
@@ -56,7 +58,7 @@ function FormTemplate(props){
     if (intervalRef.current) return;
     intervalRef.current = setInterval(() => {
         let action_name = event.target.name
-        console.log(action_name)
+       
         switch(action_name){
             case "+secconds":
                 setSecconds((prev_number) => prev_number + 1)
@@ -96,41 +98,75 @@ function FormTemplate(props){
     
     setSecconds((prevState)=> {
         if(prevState === 1){
+            console.log(props.id, "cia refresh pomadoroooo")
             stop_timer()
-            
+            alarm.play()
         }
         var newDate = prevState - 1
-        console.log(props.id, "refresh pomadoro")
-        console.log(props.start_break)
+        
         return newDate
     })
 
     }
 
     function start_timer(){
-        
+        console.log(props.id, "start timer")
+        console.log("VALANDZIUKES", hours, minutes, secconds)
+        if(props.id == 1) {
+
         if(hours === 0 && minutes === 0 && secconds === 0){
             return
         }
-        else{updateStart(true)}
+        else{
+            props.timer_state_change(true, false)
+            
+        }
+        }
+        else if(props.id == 2){
+            
+            if(hours === 0 && minutes === 0 && secconds === 0){
+                return
+            }
+            else{
+                props.timer_state_change(false, true)
+        }}
+
+
+       
             
     }
 
     function stop_timer(){
-        updateStart(false)
-        props.timer_stops(true)
+        if (props.id == 1){
+        props.timer_state_change(false, true) // cia problema del to, kad pasileidzia automatiskai nepaisant to ar nulis ar ne
+        }
+        else if (props.id == 2){
+            props.timer_state_change(false, false)
+        }
+        
     }
 
 
+
     useEffect(() => {
+   
+
+    if (props.id == 2 && props.break_state == true && props.timer_state == false){
+      
+        const interval = setInterval(refresh_pomadoro, 1000);
     
-    if (startTimer == true){
+        return () => clearInterval(interval);
+
+    }
+    
+    if (props.timer_state == true && props.break_state == false && props.id == 1){
+
         
         const interval = setInterval(refresh_pomadoro, 1000);
     
         return () => clearInterval(interval);
     }
-    }, [startTimer]);
+    }, [props.timer_state, props.break_state, props.id]);
 
     function reset_timer(){
         setSecconds(0)
@@ -140,21 +176,34 @@ function FormTemplate(props){
 
 
     return(
-        <div>
-            <div className="timer">
-                <h1>Focus Timer</h1>
-                <h1>{time_2.toLocaleTimeString("uk-Uk")}</h1>
-                <h2>Adjust secconds <Button variant="contained" name="+secconds" onClick={set_timer} onMouseDown={startCounter} onMouseUp={stopCounter}>+</Button> <Button variant="contained" name="-secconds" onClick={set_timer} onMouseDown={startCounter} onMouseUp={stopCounter}>-</Button> </h2>
-                <h2>Adjust minutes <Button variant="contained" name="+minutes" onClick={set_timer} onMouseDown={startCounter} onMouseUp={stopCounter}>+</Button> <Button variant="contained" name="-minutes" onClick={set_timer} onMouseDown={startCounter} onMouseUp={stopCounter}>-</Button></h2>
-                <h2>Adjust hours <Button variant="contained" name="+hours" onClick={set_timer} onMouseDown={startCounter} onMouseUp={stopCounter}>+</Button> <Button variant="contained"name="-hours" onClick={set_timer} onMouseDown={startCounter} onMouseUp={stopCounter}>-</Button></h2>
-                <div className="buttons">
-                <Button onClick={start_timer} >Start Timer</Button>
-                <Button onClick={stop_timer}>Stop Timer</Button>
-                <Button onClick={reset_timer}>Reset Timer</Button>
-                </div>
+        <div className="timer">
+            <h1>{props.title}</h1>
+            <h1>{time_2.toLocaleTimeString("uk-Uk")}</h1>
+            <Grid container spacing={0} marginTop={0}>
+                <Grid xs={4}>
+                <h2>Adjust hours </h2>
+                    <Button className="Button" variant="contained" name="+hours" onClick={set_timer} onMouseDown={startCounter} onMouseUp={stopCounter}>+</Button> 
+                    <Button className="Button" variant="contained"name="-hours" onClick={set_timer} onMouseDown={startCounter} onMouseUp={stopCounter}>-</Button>
+                </Grid>
+                <Grid xs={4}>
+                <h2>Adjust minutes </h2>
+                    <Button className="Button" variant="contained" name="+minutes" onClick={set_timer} onMouseDown={startCounter} onMouseUp={stopCounter}>+</Button> 
+                    <Button className="Button" variant="contained" name="-minutes" onClick={set_timer} onMouseDown={startCounter} onMouseUp={stopCounter}>-</Button>
+                </Grid>
+                <Grid item xs={4}>
+                <h2>Adjust secconds </h2>
+                    <Button className="Button" variant="contained" name="+secconds" onClick={set_timer} onMouseDown={startCounter} onMouseUp={stopCounter}>+</Button> 
+                    <Button className="Button" variant="contained" name="-secconds" onClick={set_timer} onMouseDown={startCounter} onMouseUp={stopCounter}>-</Button> 
+                </Grid> 
+            </Grid>
+            
+            <div className="buttons">
+            <Button className="Button" name="startButton" variant="text" onClick={start_timer} >Start</Button>
+            <Button className="Button" name="StopButton" onClick={stop_timer}>Stop</Button>
+            <Button className="Button" onClick={reset_timer}>Reset</Button>
             </div>
         </div>
-        
+         
     )
 }
 
