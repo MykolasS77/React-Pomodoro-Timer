@@ -98,9 +98,10 @@ function FormTemplate(props){
     
     setSecconds((prevState)=> {
         if(prevState === 1){
-            console.log(props.id, "cia refresh pomadoroooo")
-            stop_timer()
+            console.log(props.id)
             alarm.play()
+            stop_timer()
+           
         }
         var newDate = prevState - 1
         
@@ -136,9 +137,13 @@ function FormTemplate(props){
             
     }
 
-    function stop_timer(){
-        if (props.id == 1){
+    function stop_timer(event){
+        
+        if (props.id == 1 && props.timer_state != false){
         props.timer_state_change(false, true) // cia problema del to, kad pasileidzia automatiskai nepaisant to ar nulis ar ne
+        }
+        if (props.id == 1 && typeof event != "undefined"){
+            props.timer_state_change(false, false)
         }
         else if (props.id == 2){
             props.timer_state_change(false, false)
