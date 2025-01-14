@@ -1,8 +1,7 @@
 import React, { useState, useEffect } from 'react';
-import Stack from '@mui/material/Stack';
 import Button from '@mui/material/Button';
 import Grid from '@mui/material/Grid';
-import Box from '@mui/material/Box';
+
 
 function FormTemplate(props){
 
@@ -114,23 +113,11 @@ function FormTemplate(props){
         console.log(props.id, "start timer")
         console.log("VALANDZIUKES", hours, minutes, secconds)
         if(props.id == 1) {
-
-        if(hours === 0 && minutes === 0 && secconds === 0){
-            return
+            props.timer_state_change(true, false)  
         }
-        else{
-            props.timer_state_change(true, false)
-            
+        else if(props.id === 2){  
+            props.timer_state_change(false, true)
         }
-        }
-        else if(props.id == 2){
-            
-            if(hours === 0 && minutes === 0 && secconds === 0){
-                return
-            }
-            else{
-                props.timer_state_change(false, true)
-        }}
 
 
        
@@ -139,16 +126,22 @@ function FormTemplate(props){
 
     function stop_timer(event){
         
-        if (props.id == 1 && props.timer_state != false){
-        props.timer_state_change(false, true) // cia problema del to, kad pasileidzia automatiskai nepaisant to ar nulis ar ne
+        if (props.id === 1 && props.timer_state !== false){
+            props.timer_state_change(false, true) // cia problema del to, kad pasileidzia automatiskai nepaisant to ar nulis ar ne
         }
-        if (props.id == 1 && typeof event != "undefined"){
+        if (props.id === 1 && typeof event !== "undefined"){
             props.timer_state_change(false, false)
         }
-        else if (props.id == 2){
+        else if (props.id === 2){
             props.timer_state_change(false, false)
         }
         
+    }
+
+    function reset_timer(){
+        setSecconds(0)
+        setMinutes(0)
+        setHours(0)
     }
 
 
@@ -157,15 +150,19 @@ function FormTemplate(props){
    
 
     if (props.id == 2 && props.break_state == true && props.timer_state == false){
-      
+        if(hours === 0 && minutes === 0 && secconds === 0){
+            return
+        }
         const interval = setInterval(refresh_pomadoro, 1000);
     
         return () => clearInterval(interval);
 
     }
     
-    if (props.timer_state == true && props.break_state == false && props.id == 1){
-
+    if (props.id == 1 && props.timer_state == true && props.break_state == false ){
+         if(hours === 0 && minutes === 0 && secconds === 0){
+            return
+        }
         
         const interval = setInterval(refresh_pomadoro, 1000);
     
@@ -173,11 +170,7 @@ function FormTemplate(props){
     }
     }, [props.timer_state, props.break_state, props.id]);
 
-    function reset_timer(){
-        setSecconds(0)
-        setMinutes(0)
-        setHours(0)
-    }
+  
 
 
     return(
