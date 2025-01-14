@@ -15,6 +15,7 @@ function App() {
         alarm.play();
       }
 
+
       return (
         <div className="timerBody">
         <Timer timer_stops={start_pause_break}/>
