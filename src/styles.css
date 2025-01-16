@@ -1,13 +1,13 @@
 body {
-    background: #bb3b3b;
+    
     padding: 0;
     margin: 0;
-    background-image: url("./tomato.png");
+    background-image:url("https://www.transparenttextures.com/patterns/cartographer.png");
     background-color: #ffffff;
   }
 
 .timer {
-    background-color: rgb(216, 101, 66);
+    background-color: #c0432d;
     margin: auto;
     width: 30%;
     border: 5px solid rgb(21, 22, 21);
@@ -38,7 +38,7 @@ h2{
 }
 
 header {
-  background-color: #e23307;
+  background-color: #ec3413;
   box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.3);
   text-align: center;
   border-bottom: black solid;
@@ -69,4 +69,19 @@ header {
   margin-top: 15px;
 }
 
+@media screen and (max-width: 700px) {
+  
+  h2{
+    margin-top: 10px;
+    margin-bottom: 10px;
+    font-size: 1em
+  }
+
+  .title{
+    font-size: 3em;
+     
+  }
+
+
+}
 
