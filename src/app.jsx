@@ -7,19 +7,31 @@ function App() {
 
       const [startBreak, updateBreak] = useState(false)
       const [timerRuns, updateTimerRuns] = useState(false)
+      const [title_text, setTitleText] = useState("Pomadoro Timer")
       
 
       function start_pause_break(timer_state, break_state){
-        console.log(timer_state, "Cia app function")
         updateTimerRuns(timer_state)
         updateBreak(break_state) 
+        if(timer_state == true){
+        document.body.style.backgroundColor = "#343cb17e"
+        setTitleText("Focus Time!")
+        }
+        else if(break_state == true){
+        document.body.style.backgroundColor = "#26770d98"
+        setTitleText("Break Time!")
+        }
+        else if (timer_state == false && break_state == false){
+        document.body.style.backgroundColor = "#ffffff"
+        setTitleText("Pomadoro Timer")
+        }
+        
       }
 
-
+    
       return (
         <div>
-
-          <HeaderFunc/>
+          <HeaderFunc text={title_text}/>
           <div className="timerBody">
           <Timer id={1} title={"Focus Timer"} timer_state_change={start_pause_break} timer_state={timerRuns} break_state={startBreak}/>
           <Timer id={2} title={"Break Timer"} timer_state_change={start_pause_break} timer_state={timerRuns} break_state={startBreak}/>

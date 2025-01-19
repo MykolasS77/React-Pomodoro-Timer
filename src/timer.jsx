@@ -5,47 +5,71 @@ import Grid from '@mui/material/Grid';
 
 function FormTemplate(props){
 
-    const [secconds, setSecconds] = useState(0)
-    const [minutes, setMinutes] = useState(0)
-    const [hours, setHours] = useState(0)
+    const [seconds, setSeccondsState] = useState(0)
+    const [minutes, setMinutesState] = useState(0)
+    const [hours, setHoursState] = useState(0)
     const intervalRef = React.useRef(null);
     var alarm = new Audio("alarm.mp3");
     
-    const time_2 = new Date()
-    time_2.setHours(hours)
-    time_2.setMinutes(minutes)
-    time_2.setSeconds(secconds)
-    
+    const [time_object, setTimeObject] = useState(() => {
+        const time_2 = new Date()
+        time_2.setHours(hours)
+        time_2.setMinutes(minutes)
+        time_2.setSeconds(seconds)
+        return time_2
+    })
+
+    const updateTime = (hours, minutes, seconds) => {
+        const newDate = new Date(time_object)
+        newDate.setHours(hours)
+        newDate.setMinutes(minutes)
+        newDate.setSeconds(seconds)
+        setTimeObject(newDate)
+        
+    }
 
     function set_timer(event){
 
-        let action_name = event.target.name
+        if ((props.id === 1 && props.timer_state === true) || (props.id === 2 && props.break_state === true) ){
+            return
+        }
 
+        let action_name = event.target.name
+        
         switch(action_name){
+            
             case "+secconds":
-                var new_number = secconds + 1
-                setSecconds(new_number)
+                var new_number = seconds + 1
+                setSeccondsState(new_number)
+                updateTime(hours, minutes, new_number)
                 break
             case "-secconds":
-                var new_number = secconds - 1
-                setSecconds(new_number)
+                var new_number = seconds - 1
+                setSeccondsState(new_number)
+                updateTime(hours, minutes, new_number)
                 break
             case "+minutes":
                 var new_number = minutes + 1
-                setMinutes(new_number)
+                setMinutesState(new_number)
+                updateTime(hours, new_number, seconds)
                 break
             case "-minutes":
                 var new_number = minutes - 1
-                setMinutes(new_number)
+                setMinutesState(new_number)
+                updateTime(hours, new_number, seconds)
                 break
             case "+hours":
                 var new_number = hours + 1
-                setHours(new_number)
+                setHoursState(new_number)
+                updateTime(new_number, minutes, seconds)
                 break
             case "-hours":
                 var new_number = hours - 1
-                setHours(new_number)
+                setHoursState(new_number)
+                updateTime(new_number, minutes, seconds)
                 break
+            default:
+                    console.log(action_name)
         }
     }
 
@@ -54,33 +78,59 @@ function FormTemplate(props){
       }, []);
 
     const startCounter = (event) => {
+    if ((props.id === 1 && props.timer_state === true) || (props.id === 2 && props.break_state === true) ){
+        return
+    }
+
     if (intervalRef.current) return;
     intervalRef.current = setInterval(() => {
         let action_name = event.target.name
-       
+        
         switch(action_name){
             case "+secconds":
-                setSecconds((prev_number) => prev_number + 1)
+                setSeccondsState((prev_number) => {
+                    let new_number = prev_number + 1
+                    updateTime(hours, minutes, new_number)
+                    return new_number
+                })
                 break
             case "-secconds":
-                setSecconds((prev_number) => prev_number - 1)
+                setSeccondsState((prev_number) => {
+                    let new_number = prev_number - 1
+                    updateTime(hours, minutes, new_number)
+                    return new_number
+                })
                 break
             case "+minutes":
-                
-                setMinutes((prev_number) => prev_number + 1)
+                setMinutesState((prev_number) => {
+                    let new_number = prev_number + 1
+                    updateTime(hours, new_number, seconds)
+                    return new_number
+                })
                 break
             case "-minutes":
-                
-                setMinutes((prev_number) => prev_number - 1)
+                setMinutesState((prev_number) => {
+                    let new_number = prev_number - 1
+                    updateTime(hours, new_number, seconds)
+                    return new_number
+                })
                 break
             case "+hours":
-                
-                setHours((prev_number) => prev_number + 1)
+                setHoursState((prev_number) => {
+                    let new_number = prev_number + 1
+                    updateTime(new_number, minutes, seconds)
+                    return new_number
+                })
                 break
             case "-hours":
-                
-                setHours((prev_number) => prev_number - 1)
+                setHoursState((prev_number) => {
+                    let new_number = prev_number - 1
+                    updateTime(new_number, minutes, seconds)
+                    return new_number
+                })
                 break
+            default:
+                console.log(action_name)
         }
 
     }, 150);
@@ -94,40 +144,36 @@ function FormTemplate(props){
       };
 
     function refresh_pomadoro(){
-    
-    setSecconds((prevState)=> {
-        if(prevState === 1){
-            console.log(props.id)
-            alarm.play()
+    setTimeObject((prevState) => {
+        let newDate = new Date(prevState - 1000)
+        if(newDate.getSeconds() === 0 && newDate.getMinutes() === 0 && newDate.getHours() === 0){
             stop_timer()
-           
+            reset_timer()
+            alarm.play()
         }
-        var newDate = prevState - 1
-        
+        setSeccondsState(newDate.getSeconds())
+        setMinutesState(newDate.getMinutes())
+        setHoursState(newDate.getHours())
         return newDate
     })
 
     }
 
     function start_timer(){
-        console.log(props.id, "start timer")
-        console.log("VALANDZIUKES", hours, minutes, secconds)
-        if(props.id == 1) {
+   
+        if(props.id === 1) {
             props.timer_state_change(true, false)  
         }
         else if(props.id === 2){  
             props.timer_state_change(false, true)
         }
-
-
-       
             
     }
 
     function stop_timer(event){
         
         if (props.id === 1 && props.timer_state !== false){
-            props.timer_state_change(false, true) // cia problema del to, kad pasileidzia automatiskai nepaisant to ar nulis ar ne
+            props.timer_state_change(false, true)
         }
         if (props.id === 1 && typeof event !== "undefined"){
             props.timer_state_change(false, false)
@@ -139,9 +185,11 @@ function FormTemplate(props){
     }
 
     function reset_timer(){
-        setSecconds(0)
-        setMinutes(0)
-        setHours(0)
+        console.log("reset")
+        setSeccondsState(0)
+        setMinutesState(0)
+        setHoursState(0)
+        updateTime(0, 0, 0)
     }
 
 
@@ -149,8 +197,9 @@ function FormTemplate(props){
     useEffect(() => {
    
 
-    if (props.id == 2 && props.break_state == true && props.timer_state == false){
-        if(hours === 0 && minutes === 0 && secconds === 0){
+    if (props.id === 1 && props.break_state === false && props.timer_state === true){
+        if(time_object.getSeconds() === 0 && time_object.getMinutes() === 0 && time_object.getHours() === 0){
+            props.timer_state_change(false, false)
             return
         }
         const interval = setInterval(refresh_pomadoro, 1000);
@@ -159,8 +208,9 @@ function FormTemplate(props){
 
     }
     
-    if (props.id == 1 && props.timer_state == true && props.break_state == false ){
-         if(hours === 0 && minutes === 0 && secconds === 0){
+    if (props.id === 2 && props.break_state === true && props.timer_state === false){
+        if(time_object.getSeconds() === 0 && time_object.getMinutes() === 0 && time_object.getHours() === 0){
+            props.timer_state_change(false, false)
             return
         }
         
@@ -176,7 +226,7 @@ function FormTemplate(props){
     return(
         <div className="timer">
             <h1>{props.title}</h1>
-            <h1>{time_2.toLocaleTimeString("uk-Uk")}</h1>
+            <h1>{time_object.toLocaleTimeString("uk-Uk")}</h1>
             <Grid container spacing={0} marginTop={0}>
                 <Grid xs={4}>
                 <h2>Adjust hours </h2>
@@ -194,7 +244,6 @@ function FormTemplate(props){
                     <Button className="Button" variant="contained" name="-secconds" onClick={set_timer} onMouseDown={startCounter} onMouseUp={stopCounter}>-</Button> 
                 </Grid> 
             </Grid>
-            
             <div className="buttons">
             <Button className="Button" name="startButton" variant="text" onClick={start_timer} >Start</Button>
             <Button className="Button" name="StopButton" onClick={stop_timer}>Stop</Button>

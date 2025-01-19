@@ -2,18 +2,18 @@ body {
     
     padding: 0;
     margin: 0;
-    background-image:url("https://www.transparenttextures.com/patterns/cartographer.png");
+    background-image:url("https://www.transparenttextures.com/patterns/type.png");
     background-color: #ffffff;
+    
   }
 
 .timer {
-    background-color: #c0432d;
+    background-color: #c92d22b7;
     margin: auto;
     width: 30%;
-    border: 5px solid rgb(21, 22, 21);
     padding: 20px;
     text-align: center; 
-    border-radius: 50px;
+    border-radius: 20px;
     margin-bottom: 7px
 }
 
@@ -29,20 +29,22 @@ html {
 
 h1{
     margin-top: 0px;
-    margin-bottom: 3px
+    margin-bottom: 3px;
+    color: rgb(255, 255, 255)
 }
 
 h2{
   margin-top: 10px;
-  margin-bottom: 10px
+  margin-bottom: 10px;
+  color: rgb(255, 255, 255)
 }
 
 header {
-  background-color: #ec3413;
+  background-color: #ce3025;;
   box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.3);
   text-align: center;
   border-bottom: black solid;
-  height: 10vh;
+  
 }
 
 .title{
@@ -56,7 +58,7 @@ header {
 }
 
 .timer .Button {
-  background-color: rgba(122, 8, 8, 0.377);
+  background-color: rgba(122, 8, 8, 0.925);
   color: white;
   margin-left: 7px
 }
