@@ -185,7 +185,7 @@ function FormTemplate(props){
     }
 
     function reset_timer(){
-        if((props.id === 1 && props.timer_state == true) || (props.id === 2 && props.break_state == true)){
+        if((props.id === 1 && props.timer_state === true) || (props.id === 2 && props.break_state === true)){
             return
         }
         console.log("reset")
