@@ -8,6 +8,7 @@ function FormTemplate(props){
     const [seconds, setSeccondsState] = useState(0)
     const [minutes, setMinutesState] = useState(0)
     const [hours, setHoursState] = useState(0)
+
     const intervalRef = React.useRef(null);
     var alarm = new Audio("alarm.mp3");
     
@@ -28,6 +29,7 @@ function FormTemplate(props){
         
     }
 
+
     function set_timer(event){
 
         if ((props.id === 1 && props.timer_state === true) || (props.id === 2 && props.break_state === true) ){
@@ -39,34 +41,34 @@ function FormTemplate(props){
         switch(action_name){
             
             case "+secconds":
-                var new_number = seconds + 1
-                setSeccondsState(new_number)
-                updateTime(hours, minutes, new_number)
+                var new_secs = seconds + 1
+                setSeccondsState(new_secs)
+                updateTime(hours, minutes, new_secs)
                 break
             case "-secconds":
-                var new_number = seconds - 1
-                setSeccondsState(new_number)
-                updateTime(hours, minutes, new_number)
+                var new_minus_secs = seconds - 1
+                setSeccondsState(new_minus_secs)
+                updateTime(hours, minutes, new_minus_secs)
                 break
             case "+minutes":
-                var new_number = minutes + 1
-                setMinutesState(new_number)
-                updateTime(hours, new_number, seconds)
+                var new_mins = minutes + 1
+                setMinutesState(new_mins)
+                updateTime(hours, new_mins, seconds)
                 break
             case "-minutes":
-                var new_number = minutes - 1
-                setMinutesState(new_number)
-                updateTime(hours, new_number, seconds)
+                var new_minus_mins = minutes - 1
+                setMinutesState(new_minus_mins)
+                updateTime(hours, new_minus_mins, seconds)
                 break
             case "+hours":
-                var new_number = hours + 1
-                setHoursState(new_number)
-                updateTime(new_number, minutes, seconds)
+                var new_hours = hours + 1
+                setHoursState(new_hours)
+                updateTime(new_hours, minutes, seconds)
                 break
             case "-hours":
-                var new_number = hours - 1
-                setHoursState(new_number)
-                updateTime(new_number, minutes, seconds)
+                var new_minus_hours = hours - 1
+                setHoursState(new_minus_hours)
+                updateTime(new_minus_hours, minutes, seconds)
                 break
             default:
                     console.log(action_name)
@@ -143,9 +145,13 @@ function FormTemplate(props){
         }
       };
 
-    function refresh_pomadoro(){
-    setTimeObject((prevState) => {
-        let newDate = new Date(prevState - 1000)
+    function refresh_pomadoro(end_date_reference){
+    
+    const time_now = new Date()
+    const time_left = new Date(end_date_reference - time_now)
+
+    setTimeObject(() => {
+        let newDate = new Date(time_left)
         if(newDate.getSeconds() === 0 && newDate.getMinutes() === 0 && newDate.getHours() === 0){
             stop_timer()
             reset_timer()
@@ -198,14 +204,18 @@ function FormTemplate(props){
 
 
     useEffect(() => {
+    
    
-
     if (props.id === 1 && props.break_state === false && props.timer_state === true){
         if(time_object.getSeconds() === 0 && time_object.getMinutes() === 0 && time_object.getHours() === 0){
             props.timer_state_change(false, false)
             return
         }
-        const interval = setInterval(refresh_pomadoro, 1000);
+        
+        const start_date = new Date()
+        const end_date = new Date(start_date.getTime() + time_object.getTime())
+
+        const interval = setInterval(refresh_pomadoro, 1000, end_date);
     
         return () => clearInterval(interval);
 
@@ -216,12 +226,14 @@ function FormTemplate(props){
             props.timer_state_change(false, false)
             return
         }
-        
-        const interval = setInterval(refresh_pomadoro, 1000);
+        const start_date = new Date()
+        const end_date = new Date(start_date.getTime() + time_object.getTime())
+
+        const interval = setInterval(refresh_pomadoro, 1000, end_date);
     
         return () => clearInterval(interval);
     }
-    }, [props.timer_state, props.break_state, props.id]);
+    } );
 
   
 
@@ -242,7 +254,7 @@ function FormTemplate(props){
                     <Button className="Button" variant="contained" name="-minutes" onClick={set_timer} onMouseDown={startCounter} onMouseUp={stopCounter}>-</Button>
                 </Grid>
                 <Grid item xs={4}>
-                <h2>Adjust secconds </h2>
+                <h2>Adjust seconds </h2>
                     <Button className="Button" variant="contained" name="+secconds" onClick={set_timer} onMouseDown={startCounter} onMouseUp={stopCounter}>+</Button> 
                     <Button className="Button" variant="contained" name="-secconds" onClick={set_timer} onMouseDown={startCounter} onMouseUp={stopCounter}>-</Button> 
                 </Grid> 
@@ -259,3 +271,4 @@ function FormTemplate(props){
 
 export default FormTemplate
 
+// "homepage": "https://MykolasS77.github.io/React-Pomodoro-Timer",

@@ -7,7 +7,7 @@ function App() {
 
       const [startBreak, updateBreak] = useState(false)
       const [timerRuns, updateTimerRuns] = useState(false)
-      const [title_text, setTitleText] = useState("Pomadoro Timer")
+      const [title_text, setTitleText] = useState("Pomodoro Timer")
       
 
       function start_pause_break(timer_state, break_state){
@@ -23,7 +23,7 @@ function App() {
         }
         else if (timer_state == false && break_state == false){
         document.body.style.backgroundColor = "#ffffff"
-        setTitleText("Pomadoro Timer")
+        setTitleText("Pomodoro Timer")
         }
         
       }

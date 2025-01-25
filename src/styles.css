@@ -17,6 +17,8 @@ body {
     margin-bottom: 7px
 }
 
+
+
 .timerBody{
   margin-top: 10vh;
 }
@@ -32,6 +34,8 @@ h1{
     margin-bottom: 3px;
     color: rgb(255, 255, 255)
 }
+
+
 
 h2{
   margin-top: 10px;
@@ -88,6 +92,9 @@ header {
     width: 80%;
 }
 
+  .timer h1{
+  margin-bottom: 15px;
+}
 
 }
 
