@@ -271,4 +271,3 @@ function FormTemplate(props){
 
 export default FormTemplate
 
-// "homepage": "https://MykolasS77.github.io/React-Pomodoro-Timer",
