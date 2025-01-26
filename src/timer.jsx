@@ -152,7 +152,11 @@ function FormTemplate(props){
 
     setTimeObject(() => {
         let newDate = new Date(time_left)
+        
+        console.log(props.timer_state, "timer")
+        console.log(props.break_state_state, "break")
         if(newDate.getSeconds() === 0 && newDate.getMinutes() === 0 && newDate.getHours() === 0){
+            
             stop_timer()
             reset_timer()
             alarm.play()
@@ -233,7 +237,7 @@ function FormTemplate(props){
     
         return () => clearInterval(interval);
     }
-    } );
+    }, [props]);
 
   
 
