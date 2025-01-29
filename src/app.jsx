@@ -43,5 +43,3 @@ function App() {
  
 export default App
 
-
-//  "homepage": "https://MykolasS77.github.io/React-Pomodoro-Timer",
