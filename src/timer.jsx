@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import Button from '@mui/material/Button';
 import Grid from '@mui/material/Grid';
 
@@ -8,9 +8,8 @@ function FormTemplate(props){
     const [seconds, setSeccondsState] = useState(0)
     const [minutes, setMinutesState] = useState(0)
     const [hours, setHoursState] = useState(0)
-
+    
     const intervalRef = React.useRef(null);
-    var alarm = new Audio("alarm.mp3");
     
     const [time_object, setTimeObject] = useState(() => {
         const time_2 = new Date()
@@ -20,14 +19,14 @@ function FormTemplate(props){
         return time_2
     })
 
-    const updateTime = (hours, minutes, seconds) => {
+    const updateTime = useCallback((hours, minutes, seconds) => {
         const newDate = new Date(time_object)
         newDate.setHours(hours)
         newDate.setMinutes(minutes)
         newDate.setSeconds(seconds)
         setTimeObject(newDate)
         
-    }
+    }, [time_object])
 
 
     function set_timer(event){
@@ -37,41 +36,42 @@ function FormTemplate(props){
         }
 
         let action_name = event.target.name
+        let newSecs, newMins, newHours
         
         switch(action_name){
-            
+        
             case "+secconds":
-                var new_secs = seconds + 1
-                setSeccondsState(new_secs)
-                updateTime(hours, minutes, new_secs)
+                newSecs = seconds + 1
+                setSeccondsState(newSecs)
+                updateTime(hours, minutes, newSecs)
                 break
             case "-secconds":
-                var new_minus_secs = seconds - 1
-                setSeccondsState(new_minus_secs)
-                updateTime(hours, minutes, new_minus_secs)
+                newSecs = seconds - 1
+                setSeccondsState(newSecs)
+                updateTime(hours, minutes, newSecs)
                 break
             case "+minutes":
-                var new_mins = minutes + 1
-                setMinutesState(new_mins)
-                updateTime(hours, new_mins, seconds)
+                newMins = minutes + 1
+                setMinutesState(newMins)
+                updateTime(hours, newMins, seconds)
                 break
             case "-minutes":
-                var new_minus_mins = minutes - 1
-                setMinutesState(new_minus_mins)
-                updateTime(hours, new_minus_mins, seconds)
+                newMins = minutes - 1
+                setMinutesState(newMins)
+                updateTime(hours, newMins, seconds)
                 break
             case "+hours":
-                var new_hours = hours + 1
-                setHoursState(new_hours)
-                updateTime(new_hours, minutes, seconds)
+                newHours = hours + 1
+                setHoursState(newHours)
+                updateTime(newHours, minutes, seconds)
                 break
             case "-hours":
-                var new_minus_hours = hours - 1
-                setHoursState(new_minus_hours)
-                updateTime(new_minus_hours, minutes, seconds)
+                newHours = hours - 1
+                setHoursState(newHours)
+                updateTime(newHours, minutes, seconds)
                 break
             default:
-                    console.log(action_name)
+                    
         }
     }
 
@@ -132,7 +132,7 @@ function FormTemplate(props){
                 })
                 break
             default:
-                console.log(action_name)
+                
         }
 
     }, 150);
@@ -144,100 +144,122 @@ function FormTemplate(props){
           intervalRef.current = null;
         }
       };
-
-    function refresh_pomadoro(end_date_reference){
     
-    const time_now = new Date()
-    const time_left = new Date(end_date_reference - time_now)
-
-    setTimeObject(() => {
-        let newDate = new Date(time_left)
-        
-        console.log(props.timer_state, "timer")
-        console.log(props.break_state_state, "break")
-        if(newDate.getSeconds() === 0 && newDate.getMinutes() === 0 && newDate.getHours() === 0){
-            
-            stop_timer()
-            reset_timer()
-            alarm.play()
+    const start_timer = useCallback(() => {
+        if (time_object.getSeconds() === 0 && time_object.getMinutes() === 0 && time_object.getHours() === 0) {
+            return;
         }
-        setSeccondsState(newDate.getSeconds())
-        setMinutesState(newDate.getMinutes())
-        setHoursState(newDate.getHours())
-        return newDate
-    })
-
-    }
-
-    function start_timer(){
-   
-        if(props.id === 1) {
-            props.timer_state_change(true, false)  
+        if (props.id === 1) {
+            props.timer_state_change(true, false);
+        } else if (props.id === 2) {
+            props.timer_state_change(false, true);
         }
-        else if(props.id === 2){  
+    }, [time_object, props]); 
+
+    const stop_timer = useCallback(() => {
+    
+        if (props.id === 1 && props.timer_state === true){
+           
             props.timer_state_change(false, true)
-        }
             
-    }
-
-    function stop_timer(event){
-        
-        if (props.id === 1 && props.timer_state !== false){
-            props.timer_state_change(false, true)
-        }
-        if (props.id === 1 && typeof event !== "undefined"){
-            props.timer_state_change(false, false)
         }
         else if (props.id === 2){
             props.timer_state_change(false, false)
         }
         
-    }
+    }, [props])
 
-    function reset_timer(){
+    const reset_timer = useCallback(() => {
+
         if((props.id === 1 && props.timer_state === true) || (props.id === 2 && props.break_state === true)){
             return
         }
-        console.log("reset")
+        
         setSeccondsState(0)
         setMinutesState(0)
         setHoursState(0)
         updateTime(0, 0, 0)
-    }
+    }, [props, updateTime])
 
+
+    const refresh_pomadoro = useCallback((end_date_reference) =>{
+
+        const time_now = new Date()
+        const time_left = new Date(end_date_reference - time_now)
+    
+        setTimeObject(() => {
+            let newDate = new Date(time_left)
+            setSeccondsState(newDate.getSeconds())
+            setMinutesState(newDate.getMinutes())
+            setHoursState(newDate.getHours())
+            return newDate
+        }, [])
+    
+        })
+
+       
 
 
     useEffect(() => {
     
-   
-    if (props.id === 1 && props.break_state === false && props.timer_state === true){
+    var alarm = new Audio("alarm.mp3");
+    
+    function check_stop_condition(){
         if(time_object.getSeconds() === 0 && time_object.getMinutes() === 0 && time_object.getHours() === 0){
-            props.timer_state_change(false, false)
+            stop_timer()
+            alarm.play()
             return
         }
-        
+        }
+    function generate_new_date(){
         const start_date = new Date()
         const end_date = new Date(start_date.getTime() + time_object.getTime())
+        return end_date
+    }
 
-        const interval = setInterval(refresh_pomadoro, 1000, end_date);
+    
+
+   
+    if(document.hidden){
+        if (props.id === 1 && props.break_state === false && props.timer_state === true){
+           
+            check_stop_condition()
+            const interval = setInterval(refresh_pomadoro, 500, generate_new_date());
+    
+            return () => clearInterval(interval);
+    
+        }
+        
+        if (props.id === 2 && props.break_state === true && props.timer_state === false){
+
+            check_stop_condition()
+            const interval = setInterval(refresh_pomadoro, 500, generate_new_date());
+        
+            return () => clearInterval(interval);
+        }
+        
+
+    }
+    else{
+    
+    if (props.id === 1 && props.break_state === false && props.timer_state === true){
+       
+        check_stop_condition()
+        const interval = setInterval(refresh_pomadoro, 1000, generate_new_date());
     
         return () => clearInterval(interval);
 
     }
     
     if (props.id === 2 && props.break_state === true && props.timer_state === false){
-        if(time_object.getSeconds() === 0 && time_object.getMinutes() === 0 && time_object.getHours() === 0){
-            props.timer_state_change(false, false)
-            return
-        }
-        const start_date = new Date()
-        const end_date = new Date(start_date.getTime() + time_object.getTime())
 
-        const interval = setInterval(refresh_pomadoro, 1000, end_date);
+        check_stop_condition()
+        const interval = setInterval(refresh_pomadoro, 1000, generate_new_date());
     
         return () => clearInterval(interval);
     }
-    }, [props]);
+}
+    }, [props, refresh_pomadoro, stop_timer, time_object]);
 
   
 

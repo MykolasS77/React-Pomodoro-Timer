@@ -13,8 +13,7 @@ function App() {
       function start_pause_break(timer_state, break_state){
         updateTimerRuns(timer_state)
         updateBreak(break_state)
-        console.log(timerRuns, "app function")
-        console.log(startBreak, "app function")  
+
         if(timer_state === true){
         document.body.style.backgroundColor = "#343cb17e"
         setTitleText("Focus Time!")
@@ -27,7 +26,6 @@ function App() {
         document.body.style.backgroundColor = "#ffffff"
         setTitleText("Pomodoro Timer")
         }
-        
       }
 
     
@@ -46,4 +44,4 @@ function App() {
 export default App
 
 
-//"homepage": "https://MykolasS77.github.io/React-Pomodoro-Timer",
+ // "homepage": "https://MykolasS77.github.io/React-Pomodoro-Timer",
