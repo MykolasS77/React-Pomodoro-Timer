@@ -202,9 +202,8 @@ function FormTemplate(props){
 
     useEffect(() => {
     
-    var alarm = new Audio("alarm.mp3");
-    
     function check_stop_condition(){
+        const alarm = new Audio("alarm.mp3");
         if(time_object.getSeconds() === 0 && time_object.getMinutes() === 0 && time_object.getHours() === 0){
             stop_timer()
             alarm.play()
@@ -222,7 +221,6 @@ function FormTemplate(props){
    
     if(document.hidden){
         if (props.id === 1 && props.break_state === false && props.timer_state === true){
-           
             check_stop_condition()
             const interval = setInterval(refresh_pomadoro, 500, generate_new_date());
     
@@ -245,7 +243,7 @@ function FormTemplate(props){
     if (props.id === 1 && props.break_state === false && props.timer_state === true){
        
         check_stop_condition()
-        const interval = setInterval(refresh_pomadoro, 1000, generate_new_date());
+        const interval = setInterval(refresh_pomadoro, 500, generate_new_date());
     
         return () => clearInterval(interval);
 
@@ -254,7 +252,7 @@ function FormTemplate(props){
     if (props.id === 2 && props.break_state === true && props.timer_state === false){
 
         check_stop_condition()
-        const interval = setInterval(refresh_pomadoro, 1000, generate_new_date());
+        const interval = setInterval(refresh_pomadoro, 500, generate_new_date());
     
         return () => clearInterval(interval);
     }
