@@ -157,13 +157,15 @@ function FormTemplate(props){
     }, [time_object, props]); 
 
     const stop_timer = useCallback(() => {
+        
     
         if (props.id === 1 && props.timer_state === true){
-           
+            
             props.timer_state_change(false, true)
             
         }
         else if (props.id === 2){
+            
             props.timer_state_change(false, false)
         }
         
@@ -180,70 +182,42 @@ function FormTemplate(props){
         setHoursState(0)
         updateTime(0, 0, 0)
     }, [props, updateTime])
-
-
-    const refresh_pomadoro = useCallback((end_date_reference) =>{
-
-        const time_now = new Date()
-        const time_left = new Date(end_date_reference - time_now)
-    
-        setTimeObject(() => {
-            let newDate = new Date(time_left)
-            setSeccondsState(newDate.getSeconds())
-            setMinutesState(newDate.getMinutes())
-            setHoursState(newDate.getHours())
-            return newDate
-        }, [])
-    
-        })
-
        
 
-
     useEffect(() => {
+  
+    const start_date = Date.now()
+    const end_date = start_date + time_object.getTime()
     
-    function check_stop_condition(){
-        const alarm = new Audio("alarm.mp3");
-        if(time_object.getSeconds() === 0 && time_object.getMinutes() === 0 && time_object.getHours() === 0){
+
+    function updateTimer(){
+        
+        
+        const time_now = Date.now()
+        const time_left = end_date - time_now
+        const newDateLeft = new Date(time_left)
+       
+        setTimeObject(newDateLeft)
+        setSeccondsState(newDateLeft.getSeconds())
+        setMinutesState(newDateLeft.getMinutes())
+        setHoursState(newDateLeft.getHours())
+    
+        if(newDateLeft.getSeconds() === 0 && newDateLeft.getHours() === 0 && newDateLeft.getMinutes() === 0){
+            
             stop_timer()
+            const alarm = new Audio("alarm.mp3");
             alarm.play()
             return
         }
-        }
-    function generate_new_date(){
-        const start_date = new Date()
-        const end_date = new Date(start_date.getTime() + time_object.getTime())
-        return end_date
-    }
-
-    
-
-   
-    if(document.hidden){
-        if (props.id === 1 && props.break_state === false && props.timer_state === true){
-            check_stop_condition()
-            const interval = setInterval(refresh_pomadoro, 500, generate_new_date());
-    
-            return () => clearInterval(interval);
-    
-        }
         
-        if (props.id === 2 && props.break_state === true && props.timer_state === false){
-
-            check_stop_condition()
-            const interval = setInterval(refresh_pomadoro, 500, generate_new_date());
         
-            return () => clearInterval(interval);
         }
-        
-
-    }
-    else{
+       
     
     if (props.id === 1 && props.break_state === false && props.timer_state === true){
        
-        check_stop_condition()
-        const interval = setInterval(refresh_pomadoro, 500, generate_new_date());
+        
+        const interval = setInterval(updateTimer, 1000);
     
         return () => clearInterval(interval);
 
@@ -251,13 +225,14 @@ function FormTemplate(props){
     
     if (props.id === 2 && props.break_state === true && props.timer_state === false){
 
-        check_stop_condition()
-        const interval = setInterval(refresh_pomadoro, 500, generate_new_date());
+       
+        const interval = setInterval(updateTimer, 1000);
     
         return () => clearInterval(interval);
     }
-}
-    }, [props, refresh_pomadoro, stop_timer, time_object]);
+    
+   
+    }, [props, stop_timer, time_object]);
 
   
 
