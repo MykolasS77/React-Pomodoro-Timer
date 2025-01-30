@@ -206,6 +206,7 @@ function FormTemplate(props){
             
             stop_timer()
             const alarm = new Audio("alarm.mp3");
+            console.log("alarm plays")
             alarm.play()
             return
         }
@@ -225,6 +226,9 @@ function FormTemplate(props){
     
     if (props.id === 2 && props.break_state === true && props.timer_state === false){
 
+        if(time_object.getSeconds() === 0 && time_object.getHours() === 0 && time_object.getMinutes() === 0){
+            props.timer_state_change(false, false)
+        }
        
         const interval = setInterval(updateTimer, 1000);
     
