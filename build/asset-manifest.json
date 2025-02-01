@@ -1,0 +1,13 @@
+{
+  "files": {
+    "main.css": "/React-Pomodoro-Timer/static/css/main.e3df2aa2.css",
+    "main.js": "/React-Pomodoro-Timer/static/js/main.f722c1eb.js",
+    "index.html": "/React-Pomodoro-Timer/index.html",
+    "main.e3df2aa2.css.map": "/React-Pomodoro-Timer/static/css/main.e3df2aa2.css.map",
+    "main.f722c1eb.js.map": "/React-Pomodoro-Timer/static/js/main.f722c1eb.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.e3df2aa2.css",
+    "static/js/main.f722c1eb.js"
+  ]
+}
