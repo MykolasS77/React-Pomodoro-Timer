@@ -191,22 +191,25 @@ function FormTemplate(props){
     
     function updateTimer(){
         if ((props.id === 1 && props.break_state === false && props.timer_state === true) || (props.id === 2 && props.break_state === true && props.timer_state === false)) {
-        const time_now = Date.now()
-        const time_left = end_date - time_now
-        const newDateLeft = new Date(time_left)
-        setTimeObject(newDateLeft)
-        setSeccondsState(newDateLeft.getSeconds())
-        setMinutesState(newDateLeft.getMinutes())
-        setHoursState(newDateLeft.getHours())
+            
+            if(time_object.getSeconds() === 0  && time_object.getHours() === 0 && time_object.getMinutes() === 0){
+                const alarm = new Audio("alarm.mp3");
+                console.log("alarm plays")
+                console.log(alarm)
+                alarm.play()
+                stop_timer()
+                return
+                
+            }
+        
+            const time_now = Date.now()
+            const time_left = end_date - time_now
+            const newDateLeft = new Date(time_left)
+            setTimeObject(newDateLeft)
+            setSeccondsState(newDateLeft.getSeconds())
+            setMinutesState(newDateLeft.getMinutes())
+            setHoursState(newDateLeft.getHours())
     
-        if(newDateLeft.getSeconds() === 0  && newDateLeft.getHours() === 0 && newDateLeft.getMinutes() === 0){
-            
-            stop_timer()
-            const alarm = new Audio("alarm.mp3");
-            console.log("alarm plays")
-            alarm.play()
-            
-        }
         
         }
        
@@ -254,4 +257,3 @@ function FormTemplate(props){
 
 export default FormTemplate
 
-// "homepage": "https://MykolasS77.github.io/React-Pomodoro-Timer",
